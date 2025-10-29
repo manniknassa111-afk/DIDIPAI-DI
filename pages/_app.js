@@ -5,11 +5,12 @@ import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { bsc } from 'wagmi/chains'
 
 // --- WalletConnect / Wagmi setup (for WalletConnect + MetaMask) ---
+const projectId = "9b1d162ed74ceb8b6c3ab6893b30a4bc"; // <-- вставлен твой WalletConnect Project ID
 const chains = [bsc];
-const { provider } = configureChains(chains, [w3mProvider({ projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID })]);
+const { provider } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiClient = createClient({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID, version: 2, chains }),
+  connectors: w3mConnectors({ projectId, version: 2, chains }),
   provider
 });
 const ethereumClient = new EthereumClient(wagmiClient, chains);
@@ -21,7 +22,7 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </WagmiConfig>
 
-      <Web3Modal projectId={process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID} ethereumClient={ethereumClient} />
+      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
     </>
   );
 }
